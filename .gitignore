@@ -1,0 +1,23 @@
+# Entornos virtuales
+.venv/
+venv/
+
+# Salidas generadas
+output/
+
+# Variables de entorno
+.env
+
+# Base de datos SQLite local
+data/geospace.db
+
+# Caché de Vanna.ai
+8c6976e5b5410415/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code
+.vscode/
