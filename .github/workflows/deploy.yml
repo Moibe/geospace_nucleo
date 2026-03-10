@@ -38,8 +38,9 @@ jobs:
 
             # Reiniciar (o iniciar) con PM2
             PM2=/root/.nvm/versions/node/v24.9.0/bin/pm2
+            WORKDIR=$(pwd)
             $PM2 describe geospace-nucleo > /dev/null 2>&1 && \
               $PM2 restart geospace-nucleo || \
-              $PM2 start venv/bin/uvicorn --name geospace-nucleo --interpreter none -- api.app:app --host 0.0.0.0 --port 8001
+              $PM2 start $WORKDIR/venv/bin/python --name geospace-nucleo --interpreter none -- -m uvicorn api.app:app --host 0.0.0.0 --port 8001
 
             $PM2 save
