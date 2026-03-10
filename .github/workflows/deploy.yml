@@ -17,6 +17,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            source ~/.bashrc || true
+            source ~/.nvm/nvm.sh || true
+
             cd ${{ secrets.WORK_DIR }}
 
             # Traer cambios
@@ -36,6 +39,6 @@ jobs:
             # Reiniciar (o iniciar) con PM2
             pm2 describe geospace-nucleo > /dev/null 2>&1 && \
               pm2 restart geospace-nucleo || \
-              pm2 start ecosystem.config.js
+              pm2 start venv/bin/uvicorn --name geospace-nucleo --interpreter none -- api.app:app --host 0.0.0.0 --port 8001
 
             pm2 save
