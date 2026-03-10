@@ -8,5 +8,11 @@ python-dotenv>=1.0.0
 # Vanna.ai — lenguaje natural → SQL
 vanna[openai,fastapi]>=2.0.0
 
+# Conector MySQL/MariaDB (para modo producción)
+PyMySQL>=1.1.0
+
+# Conector MySQL/MariaDB (requerido en producción por Vanna)
+PyMySQL>=1.1.0
+
 # Servidor
 uvicorn>=0.30.0

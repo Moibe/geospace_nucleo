@@ -60,10 +60,10 @@ def _build_db_tool() -> RunSqlTool:
     """Crea el RunSqlTool según el ambiente."""
 
     if ENVIRONMENT == "production":
-        from vanna.integrations.mysql import MysqlRunner
+        from vanna.integrations.mysql import MySQLRunner
         from config.settings import MARIADB_HOST, MARIADB_PORT, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE
 
-        sql_runner = MysqlRunner(
+        sql_runner = MySQLRunner(
             host=MARIADB_HOST,
             port=int(MARIADB_PORT),
             user=MARIADB_USER,
