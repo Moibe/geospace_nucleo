@@ -37,8 +37,9 @@ jobs:
             mkdir -p logs
 
             # Reiniciar (o iniciar) con PM2
-            pm2 describe geospace-nucleo > /dev/null 2>&1 && \
-              pm2 restart geospace-nucleo || \
-              pm2 start venv/bin/uvicorn --name geospace-nucleo --interpreter none -- api.app:app --host 0.0.0.0 --port 8001
+            PM2=/root/.nvm/versions/node/v24.9.0/bin/pm2
+            $PM2 describe geospace-nucleo > /dev/null 2>&1 && \
+              $PM2 restart geospace-nucleo || \
+              $PM2 start venv/bin/uvicorn --name geospace-nucleo --interpreter none -- api.app:app --host 0.0.0.0 --port 8001
 
-            pm2 save
+            $PM2 save
