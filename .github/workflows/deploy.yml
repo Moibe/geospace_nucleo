@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.WORK_DIR }}
+
+            # Traer cambios
+            git pull origin ${{ secrets.MAIN_BRANCH }}
+
+            # Crear venv si no existe
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
+
+            # Instalar dependencias
+            venv/bin/pip install -r requirements.txt --quiet
+
+            # Crear carpeta de logs si no existe
+            mkdir -p logs
+
+            # Reiniciar (o iniciar) con PM2
+            pm2 describe geospace-nucleo > /dev/null 2>&1 && \
+              pm2 restart geospace-nucleo || \
+              pm2 start ecosystem.config.js
+
+            pm2 save
