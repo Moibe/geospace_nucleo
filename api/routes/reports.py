@@ -81,6 +81,25 @@ def get_report_journey(top_n: int = Query(default=15, ge=1, le=100)):
     }
 
 
+@router.get("/recent")
+def get_report_recent(top_n: int = Query(default=50, ge=1, le=500)):
+    """Últimas interacciones registradas, de más nueva a más antigua."""
+    df = _get_df()
+    cols = ["id", "type", "timestamp_utc", "country_iso", "ga_client_id", "search_method",
+            "utm_source", "utm_medium", "utm_campaign", "gclid", "fbclid"]
+    available = [c for c in cols if c in df.columns]
+    result = (
+        df[available]
+        .sort_values("timestamp_utc", ascending=False)
+        .head(top_n)
+    )
+    return {
+        "report": "recent",
+        "total_returned": len(result),
+        "data": result.to_dict(orient="records"),
+    }
+
+
 @router.get("/traffic")
 def get_report_traffic(top_n: int = Query(default=10, ge=1, le=100)):
     """Fuentes de tráfico (UTM, Google Ads, Facebook Ads)."""
