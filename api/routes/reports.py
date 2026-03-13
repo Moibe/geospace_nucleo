@@ -93,10 +93,17 @@ def get_report_recent(top_n: int = Query(default=50, ge=1, le=500)):
         .sort_values("timestamp_utc", ascending=False)
         .head(top_n)
     )
+    data = result.to_dict(orient="records")
+    import math
+    for row in data:
+        for k, v in row.items():
+            if isinstance(v, float) and math.isnan(v):
+                row[k] = None
+
     return {
         "report": "recent",
         "total_returned": len(result),
-        "data": result.to_dict(orient="records"),
+        "data": data,
     }
 
 
